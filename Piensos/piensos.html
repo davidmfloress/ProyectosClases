@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8" />
+        <title>Comida de Animales</title>
+        <style>
+            table,
+            tr,
+            td {
+                border: 2px solid black;
+                text-align: center;
+                border-collapse: collapse;
+            }
+
+            td,
+            tr {
+                width: 200px;
+                height: 150px;
+            }
+
+            div {
+                text-align: left;
+            }
+        </style>
+        <script language="JavaScript" type="text/javascript">
+
+            var opMascotas, fotoAnimal, opMarca, verPrecio, precioVisible, comprar, ultCompra, ultimaComprita;
+            var marcasPerros, marcasGatos, marcasPajaros, mascotaSeleccionada;
+            var preciosPerros, preciosGatos, preciosPajaros;
+
+            // los arrays si puedo ponerlos fuera pero partes del html no
+            window.onload = function () {
+
+                marcasPerros = ["Royal Canin", "Purina Pro Plan", "Hill's Science Diet", "Eukanuba", "Acana"];
+                marcasGatos = ["Royal Canin", "Purina ONE", "Hill's Science Diet", "IAMS", "Orijen"];
+                marcasPajaros = ["Kaytee", "ZuPreem", "Harrison's Bird Foods", "Lafeber", "Vitakraft"];
+
+                preciosPerros = [35.99, 42.50, 50.00, 38.75, 59.99]; // Precios para marcas de perros
+                preciosGatos = [30.99, 25.50, 48.00, 33.75, 55.99]; // Precios para marcas de gatos
+                preciosPajaros = [15.99, 12.75, 18.00, 22.50, 14.99];
+
+                precioVisible = false;
+
+                opMascotas = document.getElementById("animal");
+                fotoAnimal = document.getElementById("imagenAnimal")
+                opMarca = document.getElementById("marca");
+                verPrecio = document.getElementById("mostrar");
+                comprar = document.getElementById("comprar");
+                ultCompra = document.getElementById("ultcompra");
+                ultimaComprita = document.getElementById("ultimaComprita");
+
+                opMascotas.onchange = mascotaSelect;
+                opMarca.onchange = verPreciooo;
+                verPrecio.onchange = verPreciooo;
+                comprar.onclick = Guardar;
+                ultCompra.onclick = VerUltCompra;
+
+            }
+
+            function Guardar(){
+                localStorage.clear();
+                switch (mascotaSeleccionada) {
+                        case "Gato":
+                            alert(opMarca.value + " " + preciosGatos[marcasGatos.indexOf(opMarca.value)]);
+                            localStorage.setItem(opMarca.value,preciosGatos[marcasGatos.indexOf(opMarca.value)]);
+                            break;
+
+                        case "Perro":
+                            localStorage.setItem(opMarca.value,preciosPerros[marcasPerros.indexOf(opMarca.value)]);
+                            break;
+
+                        case "Pajaro":
+                            localStorage.setItem(opMarca.value,preciosPajaros[marcasPajaros.indexOf(opMarca.value)]);
+                            break;
+
+                            default:
+                                alert("NO HAY NADA SELECCIONADO");
+                                break;
+                    }
+            }
+
+            function VerUltCompra(){
+                if(localStorage.length > 0){
+                    ultimaComprita.innerText = "Marca: " + localStorage.key(0) + ". Precio: " + localStorage.getItem(localStorage.key(0));
+
+                }else{
+                    ultimaComprita.innerText = "No hay una ultima compra."
+                }
+
+            }
+
+
+
+            function mascotaSelect() {
+                mascotaSeleccionada = opMascotas.value;
+
+                fotoAnimal.src = mascotaSeleccionada + ".jpg"
+
+                verPrecio.checked = false;
+                document.getElementById("precio").innerText = "";
+                PonerPiensos();
+                ponerPrecio();
+            }
+
+            function PonerPiensos() {
+                let i = 0;
+                var continuar = true;
+                // while (opMarca.firstChild) {
+                //     opMarca.removeChild(opMarca.firstChild);
+                // }
+
+                // esto es para limpiar de un plumazo en este caso todas las opciones de la parte del select marca
+                opMarca.options.length = 0;
+
+                while (continuar) {
+
+                    var opPienso = document.createElement("option");
+
+                    switch (mascotaSeleccionada) {
+                        case "Gato":
+                            if (marcasGatos.length > i) {
+                                opPienso.value = marcasGatos[i];
+                                opPienso.textContent = marcasGatos[i];
+                                opMarca.appendChild(opPienso);
+                                i++;
+
+                            } else {
+                                continuar = false;
+                            }
+                            break;
+
+                        case "Perro":
+                            if (marcasPerros.length > i) {
+                                opPienso.value = marcasPerros[i];
+                                opPienso.textContent = marcasPerros[i];
+                                opMarca.appendChild(opPienso);
+                                i++;
+
+                            } else {
+                                continuar = false;
+                            }
+                            break;
+
+                        case "Pajaro":
+                            if (marcasPajaros.length > i) {
+                                opPienso.value = marcasPajaros[i];
+                                opPienso.textContent = marcasPajaros[i];
+                                opMarca.appendChild(opPienso);
+                                i++;
+
+
+                            } else {
+                                continuar = false;
+                            }
+                            break;
+                        default:
+                            continuar = false;
+                            document.getElementById("precio").innerText = "";
+                            document.getElementById("mostrar").checked = false;
+                            break;
+
+
+                    }
+                }
+
+            }
+
+            
+
+
+
+
+            function verPreciooo() {
+                
+                if (document.getElementById("mostrar").checked) {
+                    // precioVisible = true;
+                    switch (mascotaSeleccionada) {
+                        case "Gato":
+                            document.getElementById("precio").textContent = preciosGatos[marcasGatos.indexOf(opMarca.value)];
+                            break;
+                        case "Perro":
+                            document.getElementById("precio").textContent = preciosPerros[marcasPerros.indexOf(opMarca.value)];
+                            break;
+                        case "Pajaro":
+                            document.getElementById("precio").textContent = preciosPajaros[marcasPajaros.indexOf(opMarca.value)];
+                            break;
+                    }
+                
+                } else {
+                    document.getElementById("precio").innerText = "";
+                    // precioVisible = false;
+                }
+            }
+
+
+        </script>
+    </head>
+
+    <body>
+        <form>
+            <table>
+                <tr>
+                    <td>
+                        <label>Animal:</label><br />
+                        <select id="animal">
+                            <option>Selecciona una mascota</option>
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Pajaro">Pajaro</option>
+                        </select>
+                    </td>
+
+                    <td rowspan="2"><img id="imagenAnimal" src="" width="200"></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <label>Marca:</label><br />
+                        <select id="marca">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ver precio<input id="mostrar" type="checkbox" name="precio" value="Ver precio"></td>
+                    <td id="celda"><label id="precio"></label></td>
+                </tr>
+
+                <tr>
+                    <td><input id="comprar" type="button" value="Comprar"></td>
+                    <td><input id="ultcompra" type="button" value="Ultima compra"><label id="ultimaComprita"></label></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+
+    </html>
+</body>
+
+</html>
