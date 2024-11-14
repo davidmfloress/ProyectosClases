@@ -105,9 +105,6 @@
 
             function mascotaSelect() {
                 mascotaSeleccionada = opMascotas.value;
-
-                fotoAnimal.src = "perro.jpg";
-
                 verPrecio.checked = false;
                 document.getElementById("precio").innerText = "";
                 PonerPiensos();
@@ -130,6 +127,7 @@
 
                     switch (mascotaSeleccionada) {
                         case "Gato":
+                            fotoAnimal.src = "gato.jpg";
                             if (marcasGatos.length > i) {
                                 opPienso.value = marcasGatos[i];
                                 opPienso.textContent = marcasGatos[i];
@@ -142,6 +140,7 @@
                             break;
 
                         case "Perro":
+                            fotoAnimal.src = "perro.jpg";
                             if (marcasPerros.length > i) {
                                 opPienso.value = marcasPerros[i];
                                 opPienso.textContent = marcasPerros[i];
@@ -154,6 +153,7 @@
                             break;
 
                         case "Pajaro":
+                            fotoAnimal.src = "pajaro.jpg";
                             if (marcasPajaros.length > i) {
                                 opPienso.value = marcasPajaros[i];
                                 opPienso.textContent = marcasPajaros[i];
