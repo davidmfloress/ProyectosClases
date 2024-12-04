@@ -1,0 +1,150 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Imagenes</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        td,
+        tr {
+            height: 100px;
+            width: 100px;
+            border: 2px solid black;
+        }
+    </style>
+    <script language="JavaScript" type="text/javascript">
+
+        var td, equis = true, tabla_Array, seguir = true;
+        window.onload = function () {
+
+            td = document.getElementsByTagName("td");
+            var tabla = document.getElementsByName("table");
+
+            for (let i = 0; i < td.length; i++) {
+               td[i].onclick = CirculoCruz;
+            }
+
+
+            tabla_Array=[
+                [1,2,3],
+                [4,5,6],
+                [7,8,9]
+            ];
+
+
+
+
+        }
+
+        function CirculoCruz() {
+            // Verifica si ya hay algo en la celda
+
+            // manejo que si ya hay un ganador, no siga poniendo cruces o circulos
+            if(seguir === true){
+
+                if (!this.hasChildNodes()) {
+                    var fotillo = document.createElement("img");
+                    var indice = this.cellIndex // Índice de la celda pero en relacion a la columna solo
+                    var fila = this.parentElement.rowIndex // Índice de la fila. Realmente pulsamos en td, el parent es el tr y el rowIndex es el indice de ese tr
+                    
+    
+                    //evalua qué foto se ha puesto antes, si cruz o circulo, para poner la otra
+                    var equisCruz;
+                    if (equis) {
+                        fotillo.src = "x.jpg";
+                        equis = false;
+                        equisCruz = 'x';
+                    } else {
+                        fotillo.src = "o.jpg";
+                        equis = true;
+                        equisCruz = 'o';
+                    }
+                    fotillo.style = "width: 100px; height: 100px;";
+                    this.appendChild(fotillo); // Añadir la imagen
+    
+                    tabla_Array[fila][indice] = equisCruz; // Actualizar el estado en el array
+    
+                    ComprobarGanador(); // Comprobar si hay un ganador
+                }
+            }else{
+                var finiquitao = document.createElement("p");
+                finiquitao.innerText = "Pues ya se ha acabado el juego que mas quieres. \n Para jugar otra vez recarga la pagina";
+                document.body.appendChild(finiquitao);
+            }
+        }
+
+
+
+
+        function ComprobarGanador() {
+            // Comprobación de filas, columnas y diagonales
+            // Fila
+
+            // recorre todas las posiciones de cada fila en busca de que haya las 3 iguales, La ultima conprobación es para evitar un falso positivo
+            // y coge una casilla cualquiera de esa fila, en este caso la primera, para ver que tiene algo.
+            for (let i = 0; i < 3; i++) {
+                if (tabla_Array[i][0] === tabla_Array[i][1] && tabla_Array[i][1] === tabla_Array[i][2] && tabla_Array[i][0] !== '') {
+                    alert(tabla_Array[i][0] + ' gana en la fila ' + (i + 1));
+                    seguir = false;
+                    return;
+                }
+            }
+
+            // Columna
+            for (let i = 0; i < 3; i++) {
+                if (tabla_Array[0][i] === tabla_Array[1][i] && tabla_Array[1][i] === tabla_Array[2][i] && tabla_Array[0][i] !== '') {
+                    alert(tabla_Array[0][i] + ' gana en la columna ' + (i + 1));
+                    seguir = false;
+
+                    return;
+                }
+            }
+
+            // Diagonales
+            if (tabla_Array[0][0] === tabla_Array[1][1] && tabla_Array[1][1] === tabla_Array[2][2] && tabla_Array[0][0] !== '') {
+                alert(tabla_Array[0][0] + ' gana en la diagonal');
+                seguir = false;
+
+                return;
+            }
+            if (tabla_Array[0][2] === tabla_Array[1][1] && tabla_Array[1][1] === tabla_Array[2][0] && tabla_Array[0][2] !== '') {
+                alert(tabla_Array[0][2] + ' gana en la diagonal');
+                seguir = false;
+
+                return;
+            }
+
+            
+        }
+
+    </script>
+
+<body>
+
+    <table>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
